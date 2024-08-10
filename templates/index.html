@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Places in and around Bangalore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script>
+        function showPlaces(category) {
+            fetch(`/category/${category}`)
+                .then(response => response.json())
+                .then(data => {
+                    let placesList = document.getElementById('places-list');
+                    placesList.innerHTML = ''; // Clear previous content
+                    data.places.forEach(place => {
+                        let li = document.createElement('li');
+                        let a = document.createElement('a');
+                        a.href = `https://www.google.com/search?q=${place} Bangalore`;
+                        a.target = "_blank";
+                        a.textContent = place;
+                        li.appendChild(a);
+                        placesList.appendChild(li);
+                    });
+                });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Bangalore</h1><h2>The Silicon City</h2>
+        
+    </header>
+    <main>
+        <section>
+            <h2>Searching for.....</h2>
+            <ul>
+                {% for category in categories.keys() %}
+                    <li>
+                        <a href="javascript:void(0);" onclick="showPlaces('{{ category }}')">
+                            {{ category }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section id="places-section">
+            <h2>Places</h2>
+            <ul id="places-list">
+                <!-- Places will be loaded here -->
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Akanksha Tourist Website</p>
+    </footer>
+</body>
+</html>
